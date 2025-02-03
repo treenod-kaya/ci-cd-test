@@ -41,8 +41,9 @@ jobs:
         with:
           targetPlatform: WebGL
 
-      # Output
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
+      # todo: 아티팩트의 경우 추후 다른 방법으로 빌드 확인
+      # # Output
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: Build
+      #     path: build
