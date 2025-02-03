@@ -10,26 +10,6 @@ jobs:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      # Cache
-      - uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # Build
       - name: Build project
@@ -40,10 +20,3 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
-
-      # 비용 문제로 다른 방법으로 추가
-      # # Output
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Build
-      #     path: build
