@@ -42,9 +42,19 @@ jobs:
           targetPlatform: Android
           unityVersion: 2022.3.45f1
       
-      # APK 파일 이름 변경
-      - name: Rename APK
-        run: mv build/Android.apk build/MyGame-${{ steps.vars.outputs.sha_short }}.apk
+      # 빌드 후 디렉토리 구조 확인
+      - name: Check directory structure after build
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "\nRoot directory contents:"
+          ls -la
+          echo "\nBuild directory contents:"
+          ls -la build/
+
+    #   # APK 파일 이름 변경
+    #   - name: Rename APK
+    #     run: mv build/Android.apk build/MyGame-${{ steps.vars.outputs.sha_short }}.apk
 
       # 단계 5: 빌드 결과물을 업로드합니다
       # 커밋 해시가 포함된 이름으로 빌드 출력물을 다운로드 가능한 아티팩트로 저장합니다
