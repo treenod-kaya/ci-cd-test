@@ -1,0 +1,51 @@
+# Unity 프로젝트의 Android 버전을 빌드하기 위한 GitHub Actions 워크플로우
+name: Run the Android build
+
+# GitHub UI를 통해 수동으로 실행할 때만 워크플로우가 동작합니다
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Run the Android build
+    # Ubuntu 환경에서 빌드를 실행합니다
+    runs-on: ubuntu-latest
+    steps:
+      # 단계 1: 프로젝트 파일을 가져오기 위해 저장소를 복제합니다
+      - name: Check out my unity project.
+        uses: actions/checkout@v4
+
+      # 단계 2: 빌드 결과물 이름에 사용할 짧은 Git 해시를 가져옵니다
+      # 이후 빌드 파일 이름에 커밋 해시를 포함하는 데 사용됩니다
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        
+      # 단계 3: 빌드 속도 향상을 위해 Unity Library 폴더를 캐시합니다
+      # 이전에 컴파일된 에셋을 재사용하여 빌드 시간을 크게 단축시킵니다
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # 단계 4: Unity 프로젝트를 Android 플랫폼용으로 빌드합니다
+      # game-ci/unity-builder 액션을 사용하여 Unity 빌드 프로세스를 처리합니다
+      - name: Run the Android build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          unityVersion: 2022.3.45f1
+
+      # 단계 5: 빌드 결과물을 업로드합니다
+      # 커밋 해시가 포함된 이름으로 빌드 출력물을 다운로드 가능한 아티팩트로 저장합니다
+      - name: Upload the Android Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-${{ steps.vars.outputs.sha_short }}
+          path: build
