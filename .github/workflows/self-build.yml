@@ -1,12 +1,12 @@
 # Unity 프로젝트의 Android 버전을 빌드하기 위한 GitHub Actions 워크플로우
-name: Run the Android build
+name: Self Hosted build Test
 
 # GitHub UI를 통해 수동으로 실행할 때만 워크플로우가 동작합니다
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Run the Android build
+    name: Self Hosted build Test
     # Ubuntu 환경에서 빌드를 실행합니다
     # runs-on: ubuntu-latest
     runs-on: self-hosted
