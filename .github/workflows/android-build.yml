@@ -16,10 +16,10 @@ jobs:
           shell: powershell
     steps:
       # 작업 디렉토리 확인
-      - name: Test Working Directory
-        run: pwd
-      - name: end
-        run: echo 'completed!'
+      # - name: Test Working Directory
+      #   run: pwd
+      # - name: end
+      #   run: echo 'completed!'
 
       # 단계 1: 프로젝트 파일을 가져오기 위해 저장소를 복제합니다
       - name: Check out my unity project.
