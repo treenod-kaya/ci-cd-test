@@ -1,6 +1,9 @@
 name: Actions 😎
 
-on: [push, pull_request]
+# GitHub UI를 통해 수동으로 실행할 때만 워크플로우가 동작합니다
+on:
+  workflow_dispatch: {}
+# on: [push, pull_request]
 
 jobs:
   build:
