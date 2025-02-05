@@ -3,7 +3,12 @@ name: Run the Android build
 
 # GitHub UI를 통해 수동으로 실행할 때만 워크플로우가 동작합니다
 on:
+  schedule:
+    # - cron: '0 0 * * 1-5'  # UTC 기준 0시, 월-금 (한국 시간 9시)
+    - cron: '15 0 * * *'  # UTC 기준 0시 20 (한국 시간 9시 15분), 매일
   workflow_dispatch: {}
+
+
 
 jobs:
   build:
